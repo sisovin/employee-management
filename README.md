@@ -230,6 +230,74 @@ These are both the backend and frontend for the Employee App, built with Deno. I
 ├── README.md                       # Documentation  
 ```
 
----
+## Setup and Running
 
-These structure separates concerns for **scalability and maintainability**. I will change whenever I code implementing specific parts completely! 🚀
+1. Clone the repository:
+    ```sh
+    git clone https://github.com/githubnext/workspace-blank.git
+    cd workspace-blank
+    ```
+
+2. Create a `.env` file in the root directory and add the following environment variables:
+    ```
+    DATABASE_URL=your_postgresql_database_url
+    REDIS_URL=your_redis_url
+    JWT_SECRET=your_jwt_secret
+    REACT_APP_API_BASE_URL=http://localhost:8000/api
+    ```
+
+3. Run the backend application:
+    ```sh
+    deno run --allow-net --allow-read --allow-env src/app.ts
+    ```
+
+4. Navigate to the `employee-app-frontend` directory:
+    ```sh
+    cd employee-app-frontend
+    ```
+
+5. Install frontend dependencies:
+    ```sh
+    npm install
+    ```
+
+6. Run the frontend application:
+    ```sh
+    npm run dev
+    ```
+
+## API Documentation
+
+### Authentication Routes
+
+- **POST /auth/signup**
+    - Request Body: `{ "name": "string", "email": "string", "password": "string" }`
+    - Response: `{ "message": "User created successfully" }`
+
+- **POST /auth/login**
+    - Request Body: `{ "email": "string", "password": "string" }`
+    - Response: `{ "accessToken": "string", "refreshToken": "string" }`
+
+- **POST /auth/logout**
+    - Request Body: `{ "refreshToken": "string" }`
+    - Response: `{ "message": "User logged out successfully" }`
+
+- **POST /auth/refresh-token**
+    - Request Body: `{ "refreshToken": "string" }`
+    - Response: `{ "accessToken": "string" }`
+
+### Employee Routes
+
+- **GET /employees**
+    - Response: `[ { "id": "number", "name": "string", "position": "string", "salary": "number" } ]`
+
+- **POST /employees**
+    - Request Body: `{ "name": "string", "position": "string", "salary": "number" }`
+    - Response: `{ "message": "Employee created successfully" }`
+
+- **PUT /employees/:id**
+    - Request Body: `{ "name": "string", "position": "string", "salary": "number" }`
+    - Response: `{ "message": "Employee updated successfully" }`
+
+- **DELETE /employees/:id**
+    - Response: `{ "message": "Employee deleted successfully" }`
