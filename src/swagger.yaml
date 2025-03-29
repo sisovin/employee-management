@@ -1,0 +1,254 @@
+openapi: 3.0.0
+info:
+  title: Employee Management API
+  version: 1.0.0
+  description: API for managing employees and authentication
+
+servers:
+  - url: http://localhost:8000/api
+
+paths:
+  /auth/signup:
+    post:
+      summary: Sign up a new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SignupRequest'
+      responses:
+        '200':
+          description: User created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SignupResponse'
+  /auth/login:
+    post:
+      summary: Log in a user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        '200':
+          description: User logged in successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+  /auth/logout:
+    post:
+      summary: Log out a user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LogoutRequest'
+      responses:
+        '200':
+          description: User logged out successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LogoutResponse'
+  /auth/refresh-token:
+    post:
+      summary: Refresh access token
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RefreshTokenRequest'
+      responses:
+        '200':
+          description: Access token refreshed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RefreshTokenResponse'
+  /employees:
+    get:
+      summary: Get all employees
+      responses:
+        '200':
+          description: List of employees
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmployeesResponse'
+    post:
+      summary: Create a new employee
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateEmployeeRequest'
+      responses:
+        '200':
+          description: Employee created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateEmployeeResponse'
+  /employees/{id}:
+    put:
+      summary: Update an employee
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateEmployeeRequest'
+      responses:
+        '200':
+          description: Employee updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdateEmployeeResponse'
+    delete:
+      summary: Delete an employee
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Employee deleted successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteEmployeeResponse'
+
+components:
+  schemas:
+    SignupRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+      required:
+        - name
+        - email
+        - password
+    SignupResponse:
+      type: object
+      properties:
+        message:
+          type: string
+    LoginRequest:
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+      required:
+        - email
+        - password
+    LoginResponse:
+      type: object
+      properties:
+        accessToken:
+          type: string
+        refreshToken:
+          type: string
+    LogoutRequest:
+      type: object
+      properties:
+        refreshToken:
+          type: string
+      required:
+        - refreshToken
+    LogoutResponse:
+      type: object
+      properties:
+        message:
+          type: string
+    RefreshTokenRequest:
+      type: object
+      properties:
+        refreshToken:
+          type: string
+      required:
+        - refreshToken
+    RefreshTokenResponse:
+      type: object
+      properties:
+        accessToken:
+          type: string
+    EmployeesResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/Employee'
+    CreateEmployeeRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        position:
+          type: string
+        salary:
+          type: number
+      required:
+        - name
+        - position
+        - salary
+    CreateEmployeeResponse:
+      type: object
+      properties:
+        message:
+          type: string
+    UpdateEmployeeRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        position:
+          type: string
+        salary:
+          type: number
+      required:
+        - name
+        - position
+        - salary
+    UpdateEmployeeResponse:
+      type: object
+      properties:
+        message:
+          type: string
+    DeleteEmployeeResponse:
+      type: object
+      properties:
+        message:
+          type: string
+    Employee:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        position:
+          type: string
+        salary:
+          type: number
