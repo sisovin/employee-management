@@ -12,7 +12,8 @@ const Signup: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await signup(name, email, password);
+      const response = await signup(name, email, password);
+      localStorage.setItem('refreshToken', response.refreshToken);
       history.push('/login');
     } catch (err) {
       setError('Failed to sign up');
