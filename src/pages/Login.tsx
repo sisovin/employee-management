@@ -15,6 +15,7 @@ const Login: React.FC = () => {
     try {
       const data = await login(email, password);
       setAuthData(data);
+      localStorage.setItem('refreshToken', data.refreshToken);
       history.push('/dashboard');
     } catch (err) {
       setError('Invalid email or password');

@@ -15,4 +15,9 @@ const logout = async () => {
   return response.data;
 };
 
-export { signup, login, logout };
+const refreshToken = async (refreshToken: string) => {
+  const response = await axiosInstance.post('/auth/refresh-token', { refreshToken });
+  return response.data;
+};
+
+export { signup, login, logout, refreshToken };
